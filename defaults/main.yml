@@ -1,0 +1,18 @@
+steamcmd_user: steam
+steamcmd_bin: /usr/games/steamcmd
+cstrike_go_motd: |
+  <html>
+  <head>
+    <title>Counter-Strike: Source</title>
+  </head>
+  <body scroll="no">
+    <pre>Who needs Global Offensive anyway?</pre>
+  </body>
+  </html>
+cstrike_go_mapcycle: ""
+cstrike_go_server_cfg: ""
+cstrike_go_port: "27015"
+cstrike_go_ip: 0.0.0.0
+
+cstrike_go_extra_mapcycles: []
+cstrike_go_extra_maps_directory: []

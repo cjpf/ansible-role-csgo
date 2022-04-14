@@ -1,0 +1,12 @@
+[Unit]
+Description=Counter-Strike Global Offensive Dedicated Server
+Documentation=https://developer.valvesoftware.com/wiki/Counter-Strike:_Global_Offensive_Dedicated_Servers#Downloading_the_CS:GO_Dedicated_Server
+After=syslog.target network.target
+
+[Service]
+User={{ steamcmd_user }}
+ExecStart=/home/{{ steamcmd_user }}/cstrike-go/srcds_run -console -game cstrike +map de_dust2 +maxplayers 12 -usercon -port {{ cstrike_go_port }} +ip {{ cstrike_go_ip }} +net_public_adr {{ cstrike_go_ip }}
+KillMode=control-group
+
+[Install]
+WantedBy=default.target

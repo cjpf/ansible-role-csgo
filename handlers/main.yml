@@ -1,0 +1,15 @@
+- name: Reload systemd
+  systemd:
+    daemon_reload: yes
+
+- name: Restart cstrike-go
+  service:
+    name: cstrike-go
+    state: restarted
+  listen: "Restart CSGO games"
+
+- name: Stop cstrike-go
+  service:
+    name: cstrike-go
+    state: stopped
+  listen: "Stop CSGO games"
