@@ -1,0 +1,4 @@
+{
+    "image": "registry.gitlab.com/devops-projects69/ansible-dev-container:0.2.4",
+    "extensions": ["redhat.ansible"]
+}
