@@ -1,0 +1,12 @@
+[Unit]
+Description=Counter-Strike Global Offensive Dedicated Server
+Documentation=https://developer.valvesoftware.com/wiki/Counter-Strike:_Global_Offensive_Dedicated_Servers#Downloading_the_CS:GO_Dedicated_Server
+After=syslog.target network.target
+
+[Service]
+User={{ steamcmd_user }}
+ExecStart=/home/{{ steamcmd_user }}/csgo-ds/srcds_run -game csgo -console -usercon +net_public_adr {{ ansible_facts.all_ipv4_addresses[0] }} +ip {{ ansible_facts.all_ipv4_addresses[0] }} +port {{ csgo_port }} +game_type 0 +game_mode 1 +mapgroup mg_bomb +map de_ancient +sv_setsteamaccount {{ cstrike_gslt }} -net_port_try 1 -tickrate 128 -nobots
+KillMode=control-group
+
+[Install]
+WantedBy=default.target

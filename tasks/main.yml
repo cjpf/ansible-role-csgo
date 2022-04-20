@@ -6,22 +6,22 @@
     - name: Check if Counter-Strike Global Offensive dedicated server is installed
       stat:
         path: "{{ steam_home }}/steamapps/common/csgo-ds"
-      register: __cstrikego_exists
+      register: __csgo_exists
 
     - name: Install Counter-Strike Global Offensive dedicated server
-      command: "{{ steamcmd_bin }} +login anonymous +app_update 740 +validate +quit"
-      when: not __cstrikego_exists.stat.exists
+      command: "{{ steamcmd_bin }} +login anonymous +app_update 740 +quit"
+      when: not __csgo_exists.stat.exists
 
     - name: Ensure Counter-Strike Global Offensive dedicated server is up to date
       command: "{{ steamcmd_bin }} +login anonymous +app_update 740 +quit"
-      register: __cstrikego_update
-      changed_when: "'already up to date' not in __cstrikego_update.stdout"
-      when: __cstrikego_exists.stat.exists
+      register: __csgo_update
+      changed_when: "'already up to date' not in __csgo_update.stdout"
+      when: __csgo_exists.stat.exists
   become_user: "{{ steamcmd_user }}"
 
 - name: Create a symlink to steam home directory
   file:
-    src: "{{ steam_home }}/steamapps/common/csgo-ds"
+    src: "{{ steam_home }}/steamapps/common/Counter-Strike Global Offensive Beta - Dedicated Server"
     dest: "/home/{{ steamcmd_user }}/csgo-ds"
     owner: "{{ steamcmd_user }}"
     group: "{{ steamcmd_user }}"
@@ -29,74 +29,97 @@
 
 - name: Ensure motd.txt is installed
   template:
-    dest: "/home/{{ steamcmd_user }}/csgo-ds/cstrike/cfg/motd.txt"
+    dest: "/home/{{ steamcmd_user }}/csgo-ds/csgo/cfg/motd.txt"
     src: motd.txt.j2
     owner: "{{ steamcmd_user }}"
     group: "{{ steamcmd_user }}"
-  notify: Restart csgo-ds
+    mode: 0755
+  notify: Restart source game
 
 - name: Ensure mapcycle.txt is installed
   template:
-    dest: "/home/{{ steamcmd_user }}/csgo-ds/cstrike/cfg/mapcycle.txt"
+    dest: "/home/{{ steamcmd_user }}/csgo-ds/csgo/cfg/mapcycle.txt"
     src: mapcycle.txt.j2
     owner: "{{ steamcmd_user }}"
     group: "{{ steamcmd_user }}"
-  notify: Restart csgo-ds
+    mode: 0755
+  notify: Restart source game
 
 - name: Ensure server.cfg is installed
   template:
-    dest: "/home/{{ steamcmd_user }}/csgo-ds/cstrike/cfg/server.cfg"
+    dest: "/home/{{ steamcmd_user }}/csgo-ds/csgo/cfg/server.cfg"
     src: server.cfg.j2
     owner: "{{ steamcmd_user }}"
     group: "{{ steamcmd_user }}"
-  notify: Restart csgo-ds
+    mode: 0755
+  notify: Restart source game
+
+- name: Ensure custom.cfg is installed
+  template:
+    dest: "/home/{{ steamcmd_user }}/csgo-ds/csgo/cfg/custom.cfg"
+    src: custom.cfg.j2
+    owner: "{{ steamcmd_user }}"
+    group: "{{ steamcmd_user }}"
+    mode: 0755
+  notify: Restart source game
+
+- name: Ensure gamemodes_server.txt is installed
+  template:
+    dest: "/home/{{ steamcmd_user }}/csgo-ds/csgo/gamemodes_server.txt"
+    src: gamemodes_server.txt.j2
+    owner: "{{ steamcmd_user }}"
+    group: "{{ steamcmd_user }}"
+    mode: 0755
+  notify: Restart source game
 
 - block:
     - name: Ensure extra mapcycle files are installed
       template:
-        dest: "/home/{{ steamcmd_user }}/csgo-ds/cstrike/cfg/mapcycle_{{ item.name }}.txt"
+        dest: "/home/{{ steamcmd_user }}/csgo-ds/csgo/cfg/mapcycle_{{ item.name }}.txt"
         src: extra_mapcycle.txt.j2
         owner: "{{ steamcmd_user }}"
         group: "{{ steamcmd_user }}"
-      loop: "{{ cstrike_go_extra_mapcycles }}"
+      loop: "{{ csgo_extra_mapcycles }}"
       loop_control:
         label: "{{ item.name }}"
       when: 'item.state is not defined or item.state != "absent"'
 
     - name: Ensure unwanted mapcycle files are deleted
       file:
-        path: "/home/{{ steamcmd_user }}/csgo-ds/cstrike/cfg/mapcycle_{{ item.name }}.txt"
+        path: "/home/{{ steamcmd_user }}/csgo-ds/csgo/cfg/mapcycle_{{ item.name }}.txt"
         state: absent
-      loop: "{{ cstrike_go_extra_mapcycles }}"
+      loop: "{{ csgo_extra_mapcycles }}"
       loop_control:
         label: "{{ item.name }}"
       when: 'item.state is defined and item.state == "absent"'
-  when: 'cstrike_go_extra_mapcycles != []'
+  when: 'csgo_extra_mapcycles != []'
 
 - name: Ensure extra maps are installed
   synchronize:
-    src: "{{ cstrike_go_extra_maps_directory }}/{{ item }}"
-    dest: "/home/{{ steamcmd_user }}/csgo-ds/cstrike/custom/ansible"
+    src: "{{ csgo_extra_maps_directory }}/{{ item }}"
+    dest: "/home/{{ steamcmd_user }}/csgo-ds/csgo/custom/ansible"
   loop:
     - maps
     - materials
     - rego
-  when: 'cstrike_go_extra_maps_directory != ""'
+  when: 'csgo_extra_maps_directory != ""'
 
 - name: Ensure systemd unit is installed
   template:
-    src: csgo-ds.service.j2
-    dest: /etc/systemd/system/csgo-ds.service
-  notify: Reload systemd
+    src: csgo.service.j2
+    dest: /etc/systemd/system/csgo.service
+  notify: 
+    - Reload systemd
+    - Restart source game
 
 - meta: flush_handlers
 
-- name: Ensure csgo-ds is enabled at boot
+- name: Ensure csgo is enabled at boot
   service:
-    name: csgo-ds
+    name: csgo
     enabled: yes
 
-- name: Ensure csgo-ds is started
+- name: Ensure csgo is started
   service:
-    name: csgo-ds
+    name: csgo
     state: started

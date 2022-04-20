@@ -1,2 +1,3 @@
 {{ ansible_managed | comment(decoration="//") }}
-{{ cstrike_go_server_cfg }}
+{{ csgo_server_cfg }}
+ip {{ ansible_facts.all_ipv4_addresses[0] }}

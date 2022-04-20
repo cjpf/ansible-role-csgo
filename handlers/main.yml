@@ -2,14 +2,14 @@
   systemd:
     daemon_reload: yes
 
-- name: Restart cstrike-go
+- name: Restart source game
   service:
-    name: cstrike-go
+    name: csgo
     state: restarted
-  listen: "Restart CSGO games"
+  listen: "Restart source games"
 
-- name: Stop cstrike-go
+- name: Stop source game
   service:
-    name: cstrike-go
+    name: csgo
     state: stopped
-  listen: "Stop CSGO games"
+  listen: "Stop source games"
