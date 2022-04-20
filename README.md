@@ -28,7 +28,7 @@ This role should provide the `steam_home` variable, pointing to such a folder as
 
 ### `csgo_motd`
 
-The MOTD is a welcome text displayed by the server during the first connexion of a player.
+The MOTD is a welcome text displayed by the server during the first connection of a player.
 It is formatted in HTML.
 
 Default value:
