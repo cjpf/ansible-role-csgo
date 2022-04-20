@@ -1,0 +1,14 @@
+galaxy_info:
+  role_name: csgo
+  author: CJ Pfenninger
+  description: Configure a Counter Strike Global Offensive server
+  company: BSS
+  license: ISC
+  min_ansible_version: "2.4"
+  platforms:
+    - name: Debian
+      versions:
+        - stretch
+  galaxy_tags:
+    - csgo
+dependencies: []
