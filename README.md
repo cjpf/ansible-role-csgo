@@ -140,22 +140,18 @@ These files can later be used with rcon, using the `mapcyclefile` CVAR.
 ```yaml
 - hosts: game
   vars:
-    csgo_extra_maps_directory: "files/cstrike-go/maps"
+    csgo_extra_maps_directory: "files/csgo/maps"
     csgo_server_cfg: |
       hostname "My Server"
       sv_password password
       rcon_password rconpassword
     csgo_mapcycle: |
       de_dust2
-      de_aztec
+      de_ancient
       cs_office
-  pre_tasks:
-    - package:
-        name: acl
-        state: present
   roles:
     - role: tleguern.steamcmd
-    - role: tleguern.csgo
+    - role: cjpf.csgo
 ```
 
 ## License
