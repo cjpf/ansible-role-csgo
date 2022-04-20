@@ -5,7 +5,7 @@ After=syslog.target network.target
 
 [Service]
 User={{ steamcmd_user }}
-ExecStart=/home/{{ steamcmd_user }}/csgo-ds/srcds_run -game csgo -console -usercon +net_public_adr {{ ansible_facts.all_ipv4_addresses[0] }} +ip {{ ansible_facts.all_ipv4_addresses[0] }} +port {{ csgo_port }} +game_type 0 +game_mode 1 +mapgroup mg_bomb +map de_ancient +sv_setsteamaccount {{ cstrike_gslt }} -net_port_try 1 -tickrate 128 -nobots
+ExecStart=/home/{{ steamcmd_user }}/csgo-ds/srcds_run -game csgo -console -usercon +net_public_adr {{ ansible_facts.all_ipv4_addresses[0] }} +ip {{ ansible_facts.all_ipv4_addresses[0] }} +port {{ csgo_port }} +game_type 0 +game_mode 1 +mapgroup mg_bomb +map de_ancient +sv_setsteamaccount {{ csgo_gslt }} -net_port_try 1 -tickrate 128 -nobots
 KillMode=control-group
 
 [Install]
