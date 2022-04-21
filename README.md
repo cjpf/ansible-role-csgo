@@ -20,8 +20,10 @@ This role should provide the `steam_home` variable, pointing to such a folder as
 | `csgo_motd` | HTML text for the server's MOTD | See below |
 | `csgo_mapcycle` | List of maps for the rotation | See below |
 | `csgo_custom_config_path` | Base Path for Server and Custom Configs | See below |
+| `csgo_server_cfg` | Main Configuration File | See below |
 | `csgo_custom_cfg` | Gamemode configuration | See below |
 | `csgo_gamemodes_server_txt` | gamemodes_server.txt file | See below |
+| `csgo_gslt` | Valve Game Server Logon Token | See below - Mandatory |
 | `csgo_port` | Network port | `27015` |
 | `csgo_extra_mapcycles` | Configuration of extra mapcycle | See below |
 | `csgo_extra_maps_directory` | Directory containing extra bsp and nav files | `""` |
