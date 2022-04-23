@@ -18,14 +18,12 @@ This role should provide the `steam_home` variable, pointing to such a folder as
 | `steamcmd_user` | User name for steamcmd | `steam` |
 | `steamcmd_bin` | Path to the steamcmd executable | `/usr/games/steamcmd` |
 | `csgo_motd` | HTML text for the server's MOTD | See below |
-| `csgo_mapcycle` | List of maps for the rotation | See below |
 | `csgo_custom_config_path` | Base Path for Server and Custom Configs | See below |
 | `csgo_server_cfg` | Main Configuration File | See below |
 | `csgo_custom_cfg` | Gamemode configuration | See below |
 | `csgo_gamemodes_server_txt` | gamemodes_server.txt file | See below |
 | `csgo_gslt` | Valve Game Server Logon Token | See below - Mandatory |
 | `csgo_port` | Network port | `27015` |
-| `csgo_extra_mapcycles` | Configuration of extra mapcycle | See below |
 | `csgo_extra_maps_directory` | Directory containing extra bsp and nav files | `""` |
 
 ### `csgo_motd`
@@ -44,22 +42,6 @@ Default value:
     <pre>MOTD</pre>
   </body>
   </html>
-```
-
-### `csgo_mapcycle`
-
-The mapcycle file is a simple list of maps loaded on the server.
-
-There is no default value.
-
-Example:
-
-```
-cs_italy
-de_dust2
-de_aztec
-cs_office
-de_piranesi
 ```
 
 ### `csgo_custom_config_path`
@@ -116,27 +98,6 @@ Your Steam Game Server Logon Token.  This is required for servers you wish to ac
 https://steamcommunity.com/dev/managegameservers
 
 
-### `csgo_extra_mapcycles`
-
-A list of hashes containing two keys: `name` and `content`.
-The first will be used as a prefix to form a new mapcycle file named `mapcycle_{{ name }}.txt` and containing `{{ content }}`.
-
-Example:
-
-```
-csgo_extra_mapcycles:
-  - name: deathrun
-    content: |
-      deathrun_temple
-      deathrun_goldfever
-  - name: dustonly
-    content: |
-      de_dust
-      de_dust2
-```
-
-These files can later be used with rcon, using the `mapcyclefile` CVAR.
-
 ## Example Playbook
 
 ```yaml
@@ -147,10 +108,6 @@ These files can later be used with rcon, using the `mapcyclefile` CVAR.
       hostname "My Server"
       sv_password password
       rcon_password rconpassword
-    csgo_mapcycle: |
-      de_dust2
-      de_ancient
-      cs_office
   roles:
     - role: tleguern.steamcmd
     - role: cjpf.csgo

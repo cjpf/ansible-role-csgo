@@ -9,19 +9,10 @@ csgo_motd: |
     <pre>server configured with ansible</pre>
   </body>
   </html>
-csgo_mapcycle: |
-  de_dust2
-  de_mirage
-  de_vertigo
-  de_ancient
-  de_inferno
-  de_nuke
-  de_overpass
 csgo_custom_config_path: ""
 csgo_server_cfg: "{{ lookup('file', '{{ csgo_custom_config_path }}/server.cfg') }}"
 csgo_custom_cfg: "{{ lookup('file', '{{ csgo_custom_config_path }}/custom.cfg') }}"
 csgo_gamemodes_server_txt: "{{ lookup('file', '{{ csgo_custom_config_path }}/gamemodes_server.txt') }}"
 csgo_port: "27015"
 csgo_gslt: ""
-csgo_extra_mapcycles: []
 csgo_extra_maps_directory: ""
