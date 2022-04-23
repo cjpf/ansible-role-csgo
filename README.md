@@ -19,10 +19,10 @@ This role should provide the `steam_home` variable, pointing to such a folder as
 | `steamcmd_bin` | Path to the steamcmd executable | `/usr/games/steamcmd` |
 | `csgo_motd` | HTML text for the server's MOTD | See below |
 | `csgo_custom_config_path` | Base Path for Server and Custom Configs | See below |
-| `csgo_server_cfg` | Main Configuration File | See below |
-| `csgo_custom_cfg` | Gamemode configuration | See below |
-| `csgo_gamemodes_server_txt` | gamemodes_server.txt file | See below |
-| `csgo_gslt` | Valve Game Server Logon Token | See below - Mandatory |
+| `__csgo_server_cfg` | Main Configuration File | See below |
+| `__csgo_custom_cfg` | Gamemode configuration | See below |
+| `__csgo_gamemodes_server_txt` | gamemodes_server.txt file | See below |
+| `csgo_gslt` | Valve Game Server Logon Token | See below |
 | `csgo_port` | Network port | `27015` |
 | `csgo_extra_maps_directory` | Directory containing extra bsp and nav files | `""` |
 
@@ -50,15 +50,39 @@ The base directory for csgo_server_cfg, csgo_custom_cfg, and csgo_gamemodes_serv
 
 The contents of these files will ultimately be loaded into j2 templates and copied to your server, where they will be named appropriately.  See Valve's CSGO Dedicated Server documentation for context regarding how these files interact with the server.
 
-It is assumed you will have a server.cfg, custom.cfg and gamemodes_server.txt included in this folder, however these files can be named anything arbitrary for your convenience.
+It is assumed you will have a server.cfg, custom.cfg and gamemodes_server.txt included in this folder. See below for what these files should contain.
+
+Here is an example of how you might organize your files locally to support this role;
+
+Default value is `""` implying the files are in the root of your project.
+
+```
+project
+│   README.md
+│   main.yml  
+│
+└───sourcemod_plugins
+│   │   ...
+│   
+└───configs
+    │___practice
+    |   | server.cfg
+    |   | custom.cfg
+    |   | gamemodes_server.txt
+    |
+    │___1v1
+        | server.cfg
+        | custom.cfg
+        | gamemodes_server.txt 
+```
 
 
-### `csgo_server_cfg`
+### `__csgo_server_cfg`
 
 The server.cfg file is the main configuration file for the server.
 It holds the server name, the administrator password as well as various convars.
 
-There is no default value.
+Default value is `{{ csgo_custom_config_path }}/server.cfg`
 
 Example:
 
@@ -68,12 +92,12 @@ rcon_password mypassword
 sv_cheats 1
 ```
 
-### `csgo_custom_cfg`
+### `__csgo_custom_cfg`
 
 The custom.cfg file is the main configuration file for your gamemode.
 It holds the various rules for your gamemode. This file should be referenced directly in your gamemodes_server.txt file.
 
-There is no default value.
+Default value is `{{ csgo_custom_config_path }}/custom.cfg`
 
 Example:
 
@@ -84,11 +108,19 @@ mp_autoteambalance 1
 mp_autokick 0
 ```
 
+
 ### `csgo_gamemodes_server_txt`
 
 The gamemodes_server.txt file defines the final layers of execution for your gamemode rules and settings.
+This file is where you will point to your "custom.cfg" file for the server to load the settings you intend to use.
+This file also includes your map group definitions.  
 
 See gamemodes_server.txt.example in /csgo/.
+
+https://developer.valvesoftware.com/wiki/Counter-Strike:_Global_Offensive_Dedicated_Servers#gamemodes_server.txt
+https://developer.valvesoftware.com/wiki/Counter-Strike:_Global_Offensive_Dedicated_Servers#Maps
+
+Default value is `{{ csgo_custom_config_path }}/gamemodes_server.txt`
 
 
 ### `csgo_gslt`
@@ -104,10 +136,8 @@ https://steamcommunity.com/dev/managegameservers
 - hosts: game
   vars:
     csgo_extra_maps_directory: "files/csgo/maps"
-    csgo_server_cfg: |
-      hostname "My Server"
-      sv_password password
-      rcon_password rconpassword
+    csgo_custom_config_path: "configs/practice"
+    csgo_gslt: "123456"
   roles:
     - role: tleguern.steamcmd
     - role: cjpf.csgo

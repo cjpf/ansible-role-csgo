@@ -36,15 +36,6 @@
     mode: 0755
   notify: Restart source game
 
-- name: Ensure mapcycle.txt is installed
-  template:
-    dest: "/home/{{ steamcmd_user }}/csgo-ds/csgo/cfg/mapcycle.txt"
-    src: mapcycle.txt.j2
-    owner: "{{ steamcmd_user }}"
-    group: "{{ steamcmd_user }}"
-    mode: 0755
-  notify: Restart source game
-
 - name: Ensure server.cfg is installed
   template:
     dest: "/home/{{ steamcmd_user }}/csgo-ds/csgo/cfg/server.cfg"

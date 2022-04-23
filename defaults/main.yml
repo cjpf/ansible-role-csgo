@@ -10,9 +10,9 @@ csgo_motd: |
   </body>
   </html>
 csgo_custom_config_path: ""
-csgo_server_cfg: "{{ lookup('file', '{{ csgo_custom_config_path }}/server.cfg') }}"
-csgo_custom_cfg: "{{ lookup('file', '{{ csgo_custom_config_path }}/custom.cfg') }}"
-csgo_gamemodes_server_txt: "{{ lookup('file', '{{ csgo_custom_config_path }}/gamemodes_server.txt') }}"
+__csgo_server_cfg: "{{ lookup('file', '{{ csgo_custom_config_path }}/server.cfg') }}"
+__csgo_custom_cfg: "{{ lookup('file', '{{ csgo_custom_config_path }}/custom.cfg') }}"
+__csgo_gamemodes_server_txt: "{{ lookup('file', '{{ csgo_custom_config_path }}/gamemodes_server.txt') }}"
 csgo_port: "27015"
 csgo_gslt: ""
 csgo_extra_maps_directory: ""
