@@ -63,28 +63,6 @@
     mode: 0755
   notify: Restart source game
 
-- block:
-    - name: Ensure extra mapcycle files are installed
-      template:
-        dest: "/home/{{ steamcmd_user }}/csgo-ds/csgo/cfg/mapcycle_{{ item.name }}.txt"
-        src: extra_mapcycle.txt.j2
-        owner: "{{ steamcmd_user }}"
-        group: "{{ steamcmd_user }}"
-      loop: "{{ csgo_extra_mapcycles }}"
-      loop_control:
-        label: "{{ item.name }}"
-      when: 'item.state is not defined or item.state != "absent"'
-
-    - name: Ensure unwanted mapcycle files are deleted
-      file:
-        path: "/home/{{ steamcmd_user }}/csgo-ds/csgo/cfg/mapcycle_{{ item.name }}.txt"
-        state: absent
-      loop: "{{ csgo_extra_mapcycles }}"
-      loop_control:
-        label: "{{ item.name }}"
-      when: 'item.state is defined and item.state == "absent"'
-  when: 'csgo_extra_mapcycles != []'
-
 - name: Ensure extra maps are installed
   synchronize:
     src: "{{ csgo_extra_maps_directory }}/{{ item }}"
